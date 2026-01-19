@@ -1,0 +1,101 @@
+<style>
+    :root {
+        /* Typography */
+        --rt-font-family: sans-serif;
+        --rt-font-family-mono: monospace;
+        --rt-line-height-base: 1.5;
+        --rt-line-height-heading: 1.2;
+
+        /* Colors */
+        --rt-color-link: #0066cc;
+        --rt-color-quote-border: #ccc;
+        --rt-color-code-bg: #f4f4f4;
+        --rt-color-code-inline-bg: rgba(0, 0, 0, 0.05);
+        --rt-color-highlight: yellow;
+
+        /* Spacing & Layout */
+        --rt-spacing-list-left: 2rem;
+        --rt-spacing-block-left: 1rem;
+        --rt-spacing-code-block: 1rem;
+        --rt-spacing-code-inline-y: 0.2em;
+        --rt-spacing-code-inline-x: 0.4em;
+
+        /* Borders & Shapes */
+        --rt-border-width-quote: 3px;
+        --rt-border-radius-base: 4px;
+
+        /* List Styles */
+        --rt-list-style-ul: disc;
+        --rt-list-style-ol: decimal;
+    }
+
+    .rich-text {
+        line-height: var(--rt-line-height-base);
+        font-family: var(--rt-font-family);
+    }
+
+    .rich-text :where(h1, h2, h3, h4, h5, h6) {
+        line-height: var(--rt-line-height-heading);
+    }
+
+    /* Lists */
+    .rich-text ul {
+        list-style-type: var(--rt-list-style-ul);
+        padding-left: var(--rt-spacing-list-left);
+    }
+    .rich-text ol {
+        list-style-type: var(--rt-list-style-ol);
+        padding-left: var(--rt-spacing-list-left);
+    }
+
+    /* Hyperlinks */
+    .rich-text a {
+        color: var(--rt-color-link);
+        text-decoration: underline;
+    }
+
+    /* Blockquote */
+    .rich-text blockquote {
+        border-left: var(--rt-border-width-quote) solid var(--rt-color-quote-border);
+        padding-left: var(--rt-spacing-block-left);
+        font-style: italic;
+    }
+
+    /* Code Blocks */
+    .rich-text pre {
+        background: var(--rt-color-code-bg);
+        padding: var(--rt-spacing-code-block);
+        border-radius: var(--rt-border-radius-base);
+        overflow-x: auto;
+    }
+
+    /* Inline Code */
+    .rich-text code {
+        font-family: var(--rt-font-family-mono);
+        background: var(--rt-color-code-inline-bg);
+        padding: var(--rt-spacing-code-inline-y) var(--rt-spacing-code-inline-x);
+        border-radius: var(--rt-border-radius-base);
+    }
+
+    /* Alignment */
+    .text-left { text-align: left; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+
+    /* Highlights */
+    .highlight {
+        background-color: var(--rt-color-highlight);
+    }
+</style>
+
+<div class="rich-text">
+    <h1 class="text-center">Minimum Tokenized Rich Text</h1>
+    <p>
+        Formatting: <b>Bold</b>, <i>Italic</i>, <u>Underline</u>, <s>Strikethrough</s>.
+    </p>
+    <p>
+        Search for <span class="highlight">important</span> clues.
+    </p>
+    <pre><code>// Every value is a token
+const clean = true;</code></pre>
+</div>

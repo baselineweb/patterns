@@ -1,0 +1,24 @@
+<style>
+    .breadcrumb ol {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: end;
+    }
+
+    .breadcrumb li:not(:last-child)::after {
+        display: inline-block;
+        content: "/" / ""; /* "/" is the visual content, "" is the description for screen readers */
+    }
+</style>
+
+<nav aria-label="Breadcrumb" class="breadcrumb">
+    <ol>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Category</a></li>
+        <li><a href="#">Sub Category</a></li>
+        <li><span aria-current="page">Current</span></li>
+    </ol>
+</nav>

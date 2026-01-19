@@ -1,0 +1,31 @@
+<style>
+    :root {
+        --backdrop-background: rgba(0, 0, 0, 0.5);
+    }
+
+    .dialog::backdrop {
+        background-color: var(--backdrop-background, revert);
+    }
+</style>
+
+<button commandfor="dialog" command="show-modal">
+    Open modal
+</button>
+
+<dialog id="dialog" class="dialog" closeby="any" aria-labelledby="dialog-title">
+    <h2 id="dialog-title" tabindex="-1">Dialog heading</h2>
+    <button commandfor="dialog" command="close">
+        Close
+    </button>
+</dialog>
+
+<script>
+    const dialog = document.getElementById('dialog');
+    const title = document.getElementById('dialog-title');
+
+    dialog.addEventListener('toggle', () => {
+        if (dialog.open) {
+            title.focus();
+        }
+    });
+</script>
