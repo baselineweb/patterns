@@ -17,6 +17,11 @@ These examples utilize the **latest HTML and CSS features**, as well as modern *
 Note that design-specific accessibility checks and implementation are not covered (contrast etc.), as these component patterns are headless/unstyled (or minimal styled),
 to give maximum flexibility to style them however you want.
 
+## Local Development
+To view the pattern library locally:
+1.  `npm install`
+2.  `npm run dev`
+
 ## Usage Guidelines
 When using these patterns as a basis for your components:
 *   Combine them with a **design description** or a **design example** to match your visual requirements.
