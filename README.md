@@ -1,6 +1,8 @@
 # <img src="public/icon.svg" width="32" height="32" valign="middle"> patterns
 
-This pattern library is a collection of accessible component examples.
+A collection of accessible, headless component pattern examples.
+
+[View the Pattern Library](https://baselineweb.github.io/patterns/)
 
 ## Intent
 These patterns are **not** supposed to be used as is in production. They serve as a **foundational reference** for both developers and LLMs (Large Language Models) to create WCAG 2.1 and WCAG 2.2 compliant components in your desired frameworks (like React, Vue, Svelte, etc.) using web standards and best practices.
