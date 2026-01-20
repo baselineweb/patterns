@@ -12,7 +12,7 @@ Additionally, they can serve as a **reference for creating completely new compon
 
 These examples utilize the **latest HTML and CSS features**, as well as modern **Web APIs**, to ensure lean and efficient implementations.
 
-Note that design-specific accessibility checks and implementation are not covered (contrast etc.), as these component patterns are headless/unstyled,
+Note that design-specific accessibility checks and implementation are not covered (contrast etc.), as these component patterns are headless/unstyled (or minimal styled),
 to give maximum flexibility to style them however you want.
 
 ## How to use with LLMs
