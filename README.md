@@ -2,7 +2,7 @@
 
 A collection of accessible, headless component pattern examples.
 
-[View the Pattern Library](https://baselineweb.github.io/patterns/)
+<a href="https://baselineweb.github.io/patterns/" target="_blank">View the Pattern Library</a>
 
 ## Intent
 These patterns are **not** supposed to be used as is in production. They serve as a **foundational reference** for both developers and LLMs (Large Language Models) to create WCAG 2.1 and WCAG 2.2 compliant components in your desired frameworks (like React, Vue, Svelte, etc.) using web standards and best practices.

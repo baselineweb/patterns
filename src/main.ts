@@ -8,7 +8,6 @@ function main() {
 
     if (!nav || !iframe) return;
 
-    // Extract folder names and original paths
     const components = Object.keys(modules).map((path) => {
         // Transform "./components/accordion/index.html" -> "accordion"
         const name = path.split('/')[2];
@@ -31,10 +30,7 @@ function main() {
         iframe.src = import.meta.env.BASE_URL + 'src/' + cleanPath;
     };
 
-    // Get current pattern from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialPattern = urlParams.get('pattern');
-
+    // Create buttons first
     components.forEach((component) => {
         const button = document.createElement('button');
         button.textContent = component.name;
@@ -44,19 +40,26 @@ function main() {
             updateURL(component.name);
         });
         nav.appendChild(button);
-
-        // Load initial pattern if it matches
-        if (initialPattern === component.name) {
-            loadPattern(component.path, button);
-        }
     });
 
-    // If no initial pattern or invalid, load the first one by default if desired
-    if (!initialPattern && components.length > 0) {
-        const firstBtn = nav.querySelector('.pattern-btn') as HTMLButtonElement;
-        if (firstBtn) {
-            loadPattern(components[0].path, firstBtn);
+    // Handle initial state
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPattern = urlParams.get('pattern');
+
+    if (initialPattern) {
+        const component = components.find(c => c.name === initialPattern);
+        const button = Array.from(document.querySelectorAll('.pattern-btn'))
+            .find(btn => btn.textContent === initialPattern) as HTMLButtonElement;
+        
+        if (component && button) {
+            loadPattern(component.path, button);
+        } else if (components.length > 0) {
+            // Fallback if URL pattern is invalid
+            loadPattern(components[0].path, document.querySelector('.pattern-btn') as HTMLButtonElement);
         }
+    } else if (components.length > 0) {
+        // Default to first pattern if none in URL
+        loadPattern(components[0].path, document.querySelector('.pattern-btn') as HTMLButtonElement);
     }
 
     window.addEventListener('popstate', () => {
