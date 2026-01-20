@@ -21,7 +21,7 @@ function main() {
         window.history.pushState({}, '', url);
     };
 
-    const loadPattern = (name: string, path: string, button: HTMLButtonElement) => {
+    const loadPattern = (path: string, button: HTMLButtonElement) => {
         // Remove active class from all buttons
         document.querySelectorAll('.pattern-btn').forEach(btn => btn.classList.remove('active'));
         // Add active class to clicked button
@@ -39,14 +39,14 @@ function main() {
         button.textContent = component.name;
         button.classList.add('pattern-btn');
         button.addEventListener('click', () => {
-            loadPattern(component.name, component.path, button);
+            loadPattern(component.path, button);
             updateURL(component.name);
         });
         nav.appendChild(button);
 
         // Load initial pattern if it matches
         if (initialPattern === component.name) {
-            loadPattern(component.name, component.path, button);
+            loadPattern(component.path, button);
         }
     });
 
@@ -54,7 +54,7 @@ function main() {
     if (!initialPattern && components.length > 0) {
         const firstBtn = nav.querySelector('.pattern-btn') as HTMLButtonElement;
         if (firstBtn) {
-            loadPattern(components[0].name, components[0].path, firstBtn);
+            loadPattern(components[0].path, firstBtn);
         }
     }
 
@@ -67,7 +67,7 @@ function main() {
                 const button = Array.from(document.querySelectorAll('.pattern-btn'))
                     .find(btn => btn.textContent === pattern) as HTMLButtonElement;
                 if (button) {
-                    loadPattern(component.name, component.path, button);
+                    loadPattern(component.path, button);
                 }
             }
         }
