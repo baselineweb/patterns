@@ -1,0 +1,54 @@
+<style>
+    :root {
+        --scroll-spy-active-anchor-color: red;
+    }
+
+    .main {
+        /* could be anything depending on the actual design requirement, flex, grid, etc. (for demo purposes only and not part of the actual pattern) */
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 20px;
+    }
+
+    .table-of-contents {
+        scroll-target-group: auto;
+        position: sticky;
+        top: 0;
+
+        a:target-current {
+            color: var(--scroll-spy-active-anchor-color, revert);
+        }
+    }
+
+    .scroll-parent {
+        scroll-behavior: smooth;
+        width: 300px; /* 300px to force a scroll bar for demo purposes only and not part of the actual pattern */
+    }
+</style>
+
+<main class="main">
+    <aside>
+        <ol class="table-of-contents">
+            <li><a href="#one">Section One</a></li>
+            <li><a href="#two">Section Two</a></li>
+            <li><a href="#three">Section Three</a></li>
+        </ol>
+    </aside>
+
+    <article class="scroll-parent">
+        <h2 id="one">This section contains example content only and can be anything (not part of the actual pattern)</h2>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe molestias labore a doloremque quis? Fuga porro delectus quo exercitationem fugit quidem minima dolor, quasi similique error. Perspiciatis incidunt animi voluptate.</p>
+        <p>Voluptatum alias impedit dolor rem consequatur, ab nihil expedita veniam sunt repellat! Doloribus ab expedita illum laudantium? Ipsum, deleniti quasi. Eum minima nesciunt nam, ipsam consectetur beatae id quia ad?</p>
+        <p>Odio incidunt ratione, blanditiis laudantium, eveniet repudiandae minus animi accusamus ducimus, asperiores similique? Aperiam ipsa accusantium beatae totam vitae. Accusamus ullam asperiores cumque officia sequi error at ducimus! Nemo, unde.</p>
+        <h2 id="two">Section Two</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita quibusdam itaque cumque? Mollitia, tempore. At laudantium quod, asperiores quae eius unde autem, soluta eos sapiente ducimus consequuntur ex! Maiores, voluptate.</p>
+        <p>Quam saepe voluptate dolores quisquam? Cumque officiis, incidunt cum perferendis quam nobis error consequuntur deleniti in placeat dignissimos inventore ipsam? Aut officia sequi cupiditate amet dignissimos ipsam et adipisci tempore?</p>
+        <p>Exercitationem voluptatum vero beatae rerum. Quam ducimus libero dolorum nemo molestiae repudiandae nesciunt tempore vero, nostrum deleniti possimus labore aspernatur suscipit id cumque voluptate commodi delectus fugiat? Ut, obcaecati cum?</p>
+        <p>Odio incidunt ratione, blanditiis laudantium, eveniet repudiandae minus animi accusamus ducimus, asperiores similique? Aperiam ipsa accusantium beatae totam vitae. Accusamus ullam asperiores cumque officia sequi error at ducimus! Nemo, unde.</p>
+        <h2 id="three">Section Three</h2>
+        <p>Voluptatum alias impedit dolor rem consequatur, ab nihil expedita veniam sunt repellat! Doloribus ab expedita illum laudantium? Ipsum, deleniti quasi. Eum minima nesciunt nam, ipsam consectetur beatae id quia ad?</p>
+        <p>Eaque ut placeat eligendi ipsam sunt minus et nesciunt, velit nulla! Consequatur cupiditate tempore voluptas dolor quam repellat, impedit expedita veniam architecto officiis earum dicta aspernatur magni hic, cumque excepturi.</p>
+        <p>Quam saepe voluptate dolores quisquam? Cumque officiis, incidunt cum perferendis quam nobis error consequuntur deleniti in placeat dignissimos inventore ipsam? Aut officia sequi cupiditate amet dignissimos ipsam et adipisci tempore?</p>
+        <p>Exercitationem voluptatum vero beatae rerum. Quam ducimus libero dolorum nemo molestiae repudiandae nesciunt tempore vero, nostrum deleniti possimus labore aspernatur suscipit id cumque voluptate commodi delectus fugiat? Ut, obcaecati cum?</p>
+    </article>
+</main>

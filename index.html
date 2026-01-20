@@ -1,13 +1,25 @@
 <!doctype html>
+<!-- this file and the functionality it holds is for demo purposes only and not part of the actual pattern library -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css">
     <title>patterns</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h1>Patterns</h1>
+        </div>
+        <nav id="pattern-nav"></nav>
+      </aside>
+      <main class="content">
+        <iframe id="pattern-viewer" frameborder="0"></iframe>
+      </main>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

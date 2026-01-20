@@ -1,14 +1,77 @@
+/**
+ * this file and the functionality it holds is for demo purposes only and not part of the actual pattern library
+ */
 function main() {
     const modules = import.meta.glob('./components/**/index.html');
+    const nav = document.getElementById('pattern-nav');
+    const iframe = document.getElementById('pattern-viewer') as HTMLIFrameElement;
 
-    // Extract folder names from the keys
-    const componentFolders = Object.keys(modules).map((path) => {
+    if (!nav || !iframe) return;
+
+    // Extract folder names and original paths
+    const components = Object.keys(modules).map((path) => {
         // Transform "./components/accordion/index.html" -> "accordion"
-        return path.split('/')[2];
+        const name = path.split('/')[2];
+        return { name, path };
     });
 
-    console.log('Available components:', componentFolders);
-}
+    const updateURL = (name: string) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('pattern', name);
+        window.history.pushState({}, '', url);
+    };
 
+    const loadPattern = (name: string, path: string, button: HTMLButtonElement) => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.pattern-btn').forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+        // Set iframe src
+        iframe.src = new URL(path, import.meta.url).href;
+    };
+
+    // Get current pattern from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPattern = urlParams.get('pattern');
+
+    components.forEach((component) => {
+        const button = document.createElement('button');
+        button.textContent = component.name;
+        button.classList.add('pattern-btn');
+        button.addEventListener('click', () => {
+            loadPattern(component.name, component.path, button);
+            updateURL(component.name);
+        });
+        nav.appendChild(button);
+
+        // Load initial pattern if it matches
+        if (initialPattern === component.name) {
+            loadPattern(component.name, component.path, button);
+        }
+    });
+
+    // If no initial pattern or invalid, load the first one by default if desired
+    if (!initialPattern && components.length > 0) {
+        const firstBtn = nav.querySelector('.pattern-btn') as HTMLButtonElement;
+        if (firstBtn) {
+            loadPattern(components[0].name, components[0].path, firstBtn);
+        }
+    }
+
+    window.addEventListener('popstate', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pattern = urlParams.get('pattern');
+        if (pattern) {
+            const component = components.find(c => c.name === pattern);
+            if (component) {
+                const button = Array.from(document.querySelectorAll('.pattern-btn'))
+                    .find(btn => btn.textContent === pattern) as HTMLButtonElement;
+                if (button) {
+                    loadPattern(component.name, component.path, button);
+                }
+            }
+        }
+    });
+}
 
 main();
