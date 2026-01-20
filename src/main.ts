@@ -26,8 +26,9 @@ function main() {
         document.querySelectorAll('.pattern-btn').forEach(btn => btn.classList.remove('active'));
         // Add active class to clicked button
         button.classList.add('active');
-        // Set iframe src
-        iframe.src = new URL(path, import.meta.url).href;
+        // Set iframe src. Remove leading ./ for correct path resolution relative to base
+        const cleanPath = path.startsWith('./') ? path.substring(2) : path;
+        iframe.src = import.meta.env.BASE_URL + 'src/' + cleanPath;
     };
 
     // Get current pattern from URL
