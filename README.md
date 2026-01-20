@@ -10,7 +10,7 @@ These patterns are **not** supposed to be used as is in production. They serve a
 Whether you are building components manually or using AI-assisted workflows, these examples provide the structural and functional baseline required for accessibility.
 
 **Example prompt/skill intent:**
-> "Use the accessibility patterns from https://github.com/baselineweb/patterns/tree/main as a reference to create a React accordion component that matches the design description from my Figma MCP [figma selection accordion link]."
+> "Use the accessibility patterns from https://github.com/baselineweb/patterns as a reference to create a React accordion component that matches the design description from my Figma MCP [figma selection accordion link]."
 
 Additionally, they can serve as a **reference for creating completely new components**, providing best practice examples for accessibility.
 
