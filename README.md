@@ -12,6 +12,9 @@ Additionally, they can serve as a **reference for creating completely new compon
 
 These examples utilize the **latest HTML and CSS features**, as well as modern **Web APIs**, to ensure lean and efficient implementations.
 
+Note that design-specific accessibility checks and implementation are not covered (contrast etc.), as these component patterns are headless/unstyled,
+to give maximum flexibility to style them however you want.
+
 ## How to use with LLMs
 When you use these patterns in a prompt for an LLM, your prompt should also include:
 *   A **design description** or a **design example** that matches the pattern.
