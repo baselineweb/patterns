@@ -22,12 +22,40 @@ body, html {
 .sidebar-header {
     padding: 20px;
     border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    background-color: #f6f9fc;
+    z-index: 1;
 }
 
 .sidebar-header h1 {
     font-size: 1.2rem;
     margin: 0;
     color: #333;
+}
+
+.sidebar-title {
+    color: inherit;
+    text-decoration: none;
+}
+
+.sidebar-title:hover {
+    text-decoration: underline;
+}
+
+.sidebar-github {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+}
+
+.sidebar-github img {
+    width: 18px;
+    height: 18px;
+    display: block;
 }
 
 #pattern-nav {
@@ -52,7 +80,6 @@ body, html {
 }
 
 .pattern-btn.active {
-    background-color: #fff;
     color: #1ea7fd;
     font-weight: bold;
 }
@@ -110,6 +137,21 @@ body, html {
     min-height: 0;
     min-width: 0;
     overflow: hidden;
+}
+
+.content.readme-only {
+    display: block;
+    background-color: #fbfbfd;
+}
+
+.content.readme-only .viewer-pane,
+.content.readme-only .content-splitter {
+    display: none;
+}
+
+.content.readme-only .readme-content {
+    height: 100%;
+    overflow: auto;
 }
 
 #pattern-viewer {

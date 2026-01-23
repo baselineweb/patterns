@@ -3,7 +3,9 @@
  */
 function main() {
     const modules = import.meta.glob('./components/**/*/index.html');
-    const readmeModules = import.meta.glob('./components/**/README.md', { as: 'raw' });
+    const readmeModules = import.meta.glob('./components/**/README.md?raw');
+    const rootReadmeLoader = () => import('../README.md?raw');
+    const rootReadmeGithubUrl = 'https://github.com/baselineweb/patterns/blob/main/README.md';
     const nav = document.getElementById('pattern-nav');
     const iframe = document.getElementById('pattern-viewer') as HTMLIFrameElement;
     const mainContent = document.querySelector('main.content') as HTMLElement | null;
@@ -83,7 +85,7 @@ function main() {
 
     const readmeLink = document.createElement('a');
     readmeLink.classList.add('readme-link');
-    readmeLink.href = 'https://github.com/baselineweb/patterns';
+    readmeLink.href = rootReadmeGithubUrl;
     readmeLink.target = '_blank';
     readmeLink.rel = 'noreferrer';
     readmeLink.textContent = 'README on GitHub';
@@ -162,7 +164,7 @@ function main() {
     const renderInline = (value: string) => {
         let result = value;
         result = result.replace(/`([^`]+)`/g, (_match, code) => `<code>${escapeHtml(code)}</code>`);
-        result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
+        result = result.replace(/\[([^\]]+)\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
         result = result.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
         result = result.replace(/\*([^*]+)\*/g, '<em>$1</em>');
         return result;
@@ -296,6 +298,53 @@ function main() {
         }
     };
 
+    const detachNode = (node: HTMLElement) => {
+        if (node.parentElement) {
+            node.parentElement.removeChild(node);
+        }
+    };
+
+    const clearActivePatterns = () => {
+        document.querySelectorAll('.pattern-btn').forEach(btn => btn.classList.remove('active'));
+    };
+
+    let savedGridTemplateRows: string | null = null;
+    let currentLayoutMode: 'pattern' | 'readme-only' = 'pattern';
+
+    const setLayoutMode = (mode: 'pattern' | 'readme-only') => {
+        if (mode === currentLayoutMode) return;
+        if (mode === 'readme-only') {
+            if (savedGridTemplateRows === null) {
+                savedGridTemplateRows = mainContent.style.gridTemplateRows;
+            }
+            mainContent.classList.add('readme-only');
+            mainContent.style.gridTemplateRows = '1fr';
+            detachNode(viewerPane);
+            detachNode(splitter);
+            detachNode(readmePane);
+            if (readmeContent.parentElement !== mainContent) {
+                detachNode(readmeContent);
+                mainContent.appendChild(readmeContent);
+            }
+        } else {
+            mainContent.classList.remove('readme-only');
+            if (savedGridTemplateRows !== null) {
+                mainContent.style.gridTemplateRows = savedGridTemplateRows;
+                savedGridTemplateRows = null;
+            } else {
+                mainContent.style.gridTemplateRows = '';
+            }
+            if (readmeContent.parentElement !== readmePane) {
+                detachNode(readmeContent);
+                readmePane.appendChild(readmeContent);
+            }
+            mainContent.appendChild(viewerPane);
+            mainContent.appendChild(splitter);
+            mainContent.appendChild(readmePane);
+        }
+        currentLayoutMode = mode;
+    };
+
     const getReadmeInfo = (componentPath: string) => {
         const normalized = componentPath.startsWith('./') ? componentPath.slice(2) : componentPath;
         const directory = normalized.split('/').slice(0, -1).join('/');
@@ -327,7 +376,23 @@ function main() {
 
         try {
             const markdown = await loader();
-            setReadmeHtml(renderMarkdown(markdown));
+            setReadmeHtml(renderMarkdown(markdown as string));
+        } catch {
+            setReadmeEmpty('no documentation available');
+        }
+    };
+
+    const loadRootReadme = async () => {
+        readmeLink.href = rootReadmeGithubUrl;
+        readmeContent.classList.remove('readme-empty');
+        readmeContent.innerHTML = '';
+        if (readmeLink.parentElement) {
+            readmeLink.remove();
+        }
+
+        try {
+            const markdown = await rootReadmeLoader();
+            setReadmeHtml(renderMarkdown(markdown.default));
         } catch {
             setReadmeEmpty('no documentation available');
         }
@@ -405,13 +470,20 @@ function main() {
 
     const loadPattern = (path: string, button: HTMLButtonElement) => {
         // Remove active class from all buttons
-        document.querySelectorAll('.pattern-btn').forEach(btn => btn.classList.remove('active'));
+        setLayoutMode('pattern');
+        clearActivePatterns();
         // Add active class to clicked button
         button.classList.add('active');
         // Set iframe src. Remove leading ./ for correct path resolution relative to base
         const cleanPath = path.startsWith('./') ? path.substring(2) : path;
         iframe.src = import.meta.env.BASE_URL + 'src/' + cleanPath;
         void loadReadmeForPath(cleanPath);
+    };
+
+    const showRootReadme = () => {
+        setLayoutMode('readme-only');
+        clearActivePatterns();
+        void loadRootReadme();
     };
 
     const createButton = (componentId: string, variant: Variant, label?: string) => {
@@ -516,14 +588,8 @@ function main() {
             const details = firstButton.closest('details');
             if (details) details.open = true;
         }
-    } else if (components.length > 0) {
-        const firstComp = components[0];
-        const firstVar = firstComp.variants[0];
-        const firstPattern = firstVar.name === 'base' ? firstComp.name : `${firstComp.name}:${firstVar.name}`;
-        const firstButton = findButtonByPattern(firstPattern);
-        loadPattern(firstVar.path, firstButton);
-        const details = firstButton.closest('details');
-        if (details) details.open = true;
+    } else {
+        showRootReadme();
     }
 
     window.addEventListener('popstate', () => {
@@ -537,6 +603,8 @@ function main() {
                 const details = button.closest('details');
                 if (details) details.open = true;
             }
+        } else {
+            showRootReadme();
         }
     });
 }
