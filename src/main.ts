@@ -3,7 +3,10 @@
  */
 function main() {
     const modules = import.meta.glob('./components/**/*/index.html');
-    const readmeModules = import.meta.glob('./components/**/README.md?raw');
+    const readmeModules = import.meta.glob('./components/**/README.md', {
+        query: '?raw',
+        import: 'default'
+    });
     const rootReadmeLoader = () => import('../README.md?raw');
     const rootReadmeGithubUrl = 'https://github.com/baselineweb/patterns/blob/main/README.md';
     const nav = document.getElementById('pattern-nav');
@@ -376,7 +379,7 @@ function main() {
 
         try {
             const markdown = await loader();
-            setReadmeHtml(renderMarkdown(markdown as string));
+            setReadmeHtml(renderMarkdown(markdown));
         } catch {
             setReadmeEmpty('no documentation available');
         }
