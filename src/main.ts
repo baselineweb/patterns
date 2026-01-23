@@ -379,7 +379,7 @@ function main() {
 
         try {
             const markdown = await loader();
-            setReadmeHtml(renderMarkdown(markdown));
+            setReadmeHtml(renderMarkdown(markdown as string));
         } catch {
             setReadmeEmpty('no documentation available');
         }
