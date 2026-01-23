@@ -382,6 +382,15 @@ function main() {
         }
     };
 
+    const normalizeRootReadme = (markdown: string) => {
+        const baseUrl = import.meta.env.BASE_URL || '/';
+        const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+        const iconUrl = `${normalizedBase}icon.svg`;
+        let result = markdown.replace(/public\/icon\.svg/g, iconUrl);
+        result = result.replace(/^\s*<a\s+[^>]*>View the Pattern Library<\/a>\s*$/gm, '');
+        return result;
+    };
+
     const loadRootReadme = async () => {
         readmeLink.href = rootReadmeGithubUrl;
         readmeContent.classList.remove('readme-empty');
@@ -392,7 +401,7 @@ function main() {
 
         try {
             const markdown = await rootReadmeLoader();
-            setReadmeHtml(renderMarkdown(markdown.default));
+            setReadmeHtml(renderMarkdown(normalizeRootReadme(markdown.default)));
         } catch {
             setReadmeEmpty('no documentation available');
         }
