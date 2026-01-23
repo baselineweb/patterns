@@ -3,6 +3,7 @@
  */
 function main() {
     const modules = import.meta.glob('./components/**/*/index.html');
+    const readmeModules = import.meta.glob('./components/**/README.md', { as: 'raw' });
     const nav = document.getElementById('pattern-nav');
     const iframe = document.getElementById('pattern-viewer') as HTMLIFrameElement;
     const mainContent = document.querySelector('main.content') as HTMLElement | null;
@@ -106,7 +107,7 @@ function main() {
     };
 
     const removeIframeStyles = (doc: Document) => {
-        doc.querySelectorAll('style:not([data-essential-style])').forEach(style => style.remove());
+        doc.querySelectorAll('style:not([data-essential-styles])').forEach(style => style.remove());
     };
 
     const reloadIframe = () => {
@@ -299,10 +300,9 @@ function main() {
         const normalized = componentPath.startsWith('./') ? componentPath.slice(2) : componentPath;
         const directory = normalized.split('/').slice(0, -1).join('/');
         if (!directory) return null;
-        const localPath = `${import.meta.env.BASE_URL}src/${directory}/README.md`;
-        const localUrl = new URL(localPath, window.location.href).toString();
+        const key = `./${directory}/README.md`;
         const githubUrl = `https://github.com/baselineweb/patterns/blob/main/src/${directory}/README.md`;
-        return { localUrl, githubUrl };
+        return { key, githubUrl };
     };
 
     const loadReadmeForPath = async (componentPath: string) => {
@@ -318,21 +318,15 @@ function main() {
         if (readmeLink.parentElement) {
             readmeLink.remove();
         }
+
+        const loader = readmeModules[readmeInfo.key];
+        if (!loader) {
+            setReadmeEmpty('no documentation available');
+            return;
+        }
+
         try {
-            const response = await fetch(readmeInfo.localUrl);
-            if (!response.ok) {
-                setReadmeEmpty('no documentation available');
-                return;
-            }
-            const markdown = await response.text();
-            const contentType = response.headers.get('content-type') || '';
-            const looksLikeHtml = contentType.includes('text/html')
-                || /^\s*<!doctype html>/i.test(markdown)
-                || /<html[\s>]/i.test(markdown);
-            if (looksLikeHtml) {
-                setReadmeEmpty('no documentation available');
-                return;
-            }
+            const markdown = await loader();
             setReadmeHtml(renderMarkdown(markdown));
         } catch {
             setReadmeEmpty('no documentation available');

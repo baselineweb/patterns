@@ -2,14 +2,34 @@
     .breadcrumb ol {
         display: flex;
         flex-wrap: wrap;
-        list-style: none;
         margin: 0;
         padding: 0;
         align-items: end;
-    }
 
+        li {
+            padding-inline-start: 0.3em;
+            &:not(:is(:first-child)) {
+                padding-inline-start: 0.3em;
+            }
+        }
+    }
+</style>
+<style data-essential-styles>
+    .breadcrumb ol {
+        list-style: none;
+    }
+    .breadcrumb li {
+        display: inline-block;
+        padding-inline-end: 0;
+
+        &:not(:is(:first-child)) {
+            padding-inline-start: 0;
+        }
+    }
     .breadcrumb li:not(:last-child)::after {
         display: inline-block;
+        color: currentColor;
+        padding-inline-start: 0.3em;
         content: "/" / ""; /* "/" is the visual content, "" is the description for screen readers */
     }
 </style>
