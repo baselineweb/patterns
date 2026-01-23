@@ -107,7 +107,7 @@ function main() {
     };
 
     const removeIframeStyles = (doc: Document) => {
-        doc.querySelectorAll('style:not([data-essential-styles])').forEach(style => style.remove());
+        doc.querySelectorAll('style[data-demo-styles]').forEach(style => style.remove());
     };
 
     const reloadIframe = () => {
