@@ -1,0 +1,24 @@
+<style>
+    select,
+    ::picker(select) {
+        appearance: base-select;
+    }
+</style>
+<label for="select">Selection label</label>
+<select name="select" id="select">
+    <button>
+        <selectedcontent></selectedcontent>
+    </button>
+    <option value="success">
+        <span aria-hidden="true">✅</span>
+        <span>success</span>
+    </option>
+    <option value="info">
+        <span aria-hidden="true">ℹ️</span>
+        <span>info</span>
+    </option>
+    <option value="fail">
+        <span aria-hidden="true">❌</span>
+        <span>fail</span>
+    </option>
+</select>
