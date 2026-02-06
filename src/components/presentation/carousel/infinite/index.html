@@ -1,0 +1,164 @@
+<style>
+    ul {
+        height: stretch;
+        max-width: 80%;
+        aspect-ratio: 16/9;
+        display: block;
+        white-space: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scroll-marker-group: after;
+        anchor-name: --my-carousel;
+        position: relative;
+
+        &:has([data-accName]) {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    li {
+        list-style-type: none;
+        display: inline-block;
+        width: stretch;
+        height: stretch;
+        white-space: normal;
+        vertical-align: top;
+        background-color: color-mix(in srgb, currentColor 12%, transparent);
+        scroll-snap-align: center;
+    }
+
+    ul::scroll-marker-group {
+        position: absolute;
+        position-anchor: --my-carousel;
+        top: calc(anchor(bottom) - 70px);
+        justify-self: anchor-center;
+
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    li::scroll-marker {
+        content: attr(data-accName);
+        width: 16px;
+        height: 16px;
+        background-color: transparent;
+        border: 2px solid currentColor;
+        border-radius: 50%;
+        overflow: hidden;
+        text-indent: 16px;
+    }
+    li::scroll-marker:target-current {
+        background-color: currentColor;
+    }
+
+    li[aria-hidden]::scroll-marker {
+        display: none;
+    }
+
+    .btn-prev,
+    .btn-next {
+        position: absolute;
+        position-anchor: --my-carousel;
+        border: 0;
+        font-size: 2rem;
+        background: none;
+        color: currentColor;
+        opacity: 0.7;
+        cursor: pointer;
+        top: 50%;
+        translate: 0 -50%;
+    }
+
+    .btn-prev:hover, .btn-next:hover,
+    .btn-prev:focus, .btn-next:focus {
+        opacity: 1;
+    }
+
+    .btn-prev:active {
+        translate: 1px calc(-50% + 1px);
+    }
+
+    .btn-prev {
+        left: calc(anchor(left) + 0.75rem);
+    }
+
+    .btn-next {
+        left: calc(anchor(right) - 0.75rem);
+        translate: -100% -50%;
+    }
+
+    .btn-next:active {
+        translate: calc(-100% + 1px) calc(-50% + 1px);
+    }
+</style>
+<ul>
+    <li data-accName="Item 1">
+        <h2>Page 1</h2>
+    </li>
+    <li data-accName="Item 2">
+        <h2>Page 2</h2>
+    </li>
+    <li data-accName="Item 3">
+        <h2>Page 3</h2>
+    </li>
+    <li data-accName="Item 4">
+        <h2>Page 4</h2>
+    </li>
+</ul>
+<button class="btn-prev" aria-label="Previous">◄</button>
+<button class="btn-next" aria-label="Next">►</button>
+
+<script type="module">
+    const list = document.querySelector('ul');
+    const items = [...list.querySelectorAll('li')];
+    const count = items.length;
+
+    // Add clones for seamless wrapping
+    const lastClone = items[count - 1].cloneNode(true);
+    const firstClone = items[0].cloneNode(true);
+    lastClone.setAttribute('aria-hidden', 'true');
+    firstClone.setAttribute('aria-hidden', 'true');
+    list.prepend(lastClone);
+    list.append(firstClone);
+
+    // All items including clones: [cloneLast, 0, 1, 2, 3, cloneFirst]
+    const width = () => items[0].offsetWidth;
+
+    // Start at the first real item (offset 1 because of prepended clone)
+    list.scrollTo({ left: width(), behavior: 'instant' });
+
+    function getIndex() {
+        return Math.round(list.scrollLeft / width());
+    }
+
+    let busy = false;
+
+    function handleScrollEnd() {
+        const i = getIndex();
+        // Landed on the appended clone → jump to real first
+        if (i >= count + 1) {
+            list.scrollTo({ left: 1 * width(), behavior: 'instant' });
+        }
+        // Landed on the prepended clone → jump to real last
+        if (i <= 0) {
+            list.scrollTo({ left: count * width(), behavior: 'instant' });
+        }
+        busy = false;
+    }
+
+    list.addEventListener('scrollend', handleScrollEnd);
+
+    document.querySelector('.btn-next').addEventListener('click', () => {
+        if (busy) return;
+        busy = true;
+        list.scrollTo({ left: (getIndex() + 1) * width(), behavior: 'smooth' });
+    });
+
+    document.querySelector('.btn-prev').addEventListener('click', () => {
+        if (busy) return;
+        busy = true;
+        list.scrollTo({ left: (getIndex() - 1) * width(), behavior: 'smooth' });
+    });
+</script>
