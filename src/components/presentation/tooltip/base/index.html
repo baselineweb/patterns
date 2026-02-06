@@ -1,0 +1,47 @@
+<style>
+    [popovertarget="tooltip-1"] {
+        position: relative;
+        display: inline-block;
+    }
+
+    #tooltip-1 {
+        inset: unset;
+        position: absolute;
+        top: calc(anchor(bottom) + 5px);
+        justify-self: anchor-center;
+        width: max-content;
+        max-width: 200px;
+        border: 2px solid color-mix(in srgb, currentColor 20%, transparent);
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+<button popovertarget="tooltip-1"
+        aria-describedby="tooltip-1">
+    Hover or focus me
+    <div id="tooltip-1"
+        role="tooltip"
+        popover="hint">
+        Helpful description text
+    </div>
+</button>
+
+<script>
+    const tooltip = document.querySelector("#tooltip-1");
+    const button = tooltip.closest("[popovertarget=\"tooltip-1\"]");
+
+    button.addEventListener("mouseover", () => {
+        tooltip.showPopover({ source: button });
+    });
+
+    button.addEventListener("mouseout", () => {
+        tooltip.hidePopover();
+    });
+
+  button.addEventListener("focus", () => {
+    tooltip.showPopover({ source: button });
+  });
+
+  button.addEventListener("blur", () => {
+    tooltip.hidePopover();
+  });
+</script>
