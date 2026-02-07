@@ -39,6 +39,7 @@
         justify-content: center;
         gap: 20px;
     }
+
     li::scroll-marker {
         content: attr(data-accName);
         width: 16px;
@@ -49,6 +50,7 @@
         overflow: hidden;
         text-indent: 16px;
     }
+
     li::scroll-marker:target-current {
         background-color: currentColor;
     }
@@ -71,8 +73,10 @@
         translate: 0 -50%;
     }
 
-    .btn-prev:hover, .btn-next:hover,
-    .btn-prev:focus, .btn-next:focus {
+    .btn-prev:hover,
+    .btn-next:hover,
+    .btn-prev:focus,
+    .btn-next:focus {
         opacity: 1;
     }
 
@@ -111,54 +115,56 @@
 <button class="btn-next" aria-label="Next">►</button>
 
 <script type="module">
-    const list = document.querySelector('ul');
-    const items = [...list.querySelectorAll('li')];
-    const count = items.length;
+    document.addEventListener('DOMContentLoaded', () => {
+        const list = document.querySelector('ul');
+        const items = [...list.querySelectorAll('li')];
+        const count = items.length;
 
-    // Add clones for seamless wrapping
-    const lastClone = items[count - 1].cloneNode(true);
-    const firstClone = items[0].cloneNode(true);
-    lastClone.setAttribute('aria-hidden', 'true');
-    firstClone.setAttribute('aria-hidden', 'true');
-    list.prepend(lastClone);
-    list.append(firstClone);
+        // Add clones for seamless wrapping
+        const lastClone = items[count - 1].cloneNode(true);
+        const firstClone = items[0].cloneNode(true);
+        lastClone.setAttribute('aria-hidden', 'true');
+        firstClone.setAttribute('aria-hidden', 'true');
+        list.prepend(lastClone);
+        list.append(firstClone);
 
-    // All items including clones: [cloneLast, 0, 1, 2, 3, cloneFirst]
-    const width = () => items[0].offsetWidth;
+        // All items including clones: [cloneLast, 0, 1, 2, 3, cloneFirst]
+        const width = () => items[0].offsetWidth;
 
-    // Start at the first real item (offset 1 because of prepended clone)
-    list.scrollTo({ left: width(), behavior: 'instant' });
+        // Start at the first real item (offset 1 because of prepended clone)
+        list.scrollTo({ left: width(), behavior: 'instant' });
 
-    function getIndex() {
-        return Math.round(list.scrollLeft / width());
-    }
-
-    let busy = false;
-
-    function handleScrollEnd() {
-        const i = getIndex();
-        // Landed on the appended clone → jump to real first
-        if (i >= count + 1) {
-            list.scrollTo({ left: 1 * width(), behavior: 'instant' });
+        function getIndex() {
+            return Math.round(list.scrollLeft / width());
         }
-        // Landed on the prepended clone → jump to real last
-        if (i <= 0) {
-            list.scrollTo({ left: count * width(), behavior: 'instant' });
+
+        let busy = false;
+
+        function handleScrollEnd() {
+            const i = getIndex();
+            // Landed on the appended clone → jump to real first
+            if (i >= count + 1) {
+                list.scrollTo({ left: 1 * width(), behavior: 'instant' });
+            }
+            // Landed on the prepended clone → jump to real last
+            if (i <= 0) {
+                list.scrollTo({ left: count * width(), behavior: 'instant' });
+            }
+            busy = false;
         }
-        busy = false;
-    }
 
-    list.addEventListener('scrollend', handleScrollEnd);
+        list.addEventListener('scrollend', handleScrollEnd);
 
-    document.querySelector('.btn-next').addEventListener('click', () => {
-        if (busy) return;
-        busy = true;
-        list.scrollTo({ left: (getIndex() + 1) * width(), behavior: 'smooth' });
-    });
+        document.querySelector('.btn-prev').addEventListener('click', () => {
+            if (busy) return;
+            busy = true;
+            list.scrollTo({ left: (getIndex() - 1) * width(), behavior: 'smooth' });
+        });
 
-    document.querySelector('.btn-prev').addEventListener('click', () => {
-        if (busy) return;
-        busy = true;
-        list.scrollTo({ left: (getIndex() - 1) * width(), behavior: 'smooth' });
+        document.querySelector('.btn-next').addEventListener('click', () => {
+            if (busy) return;
+            busy = true;
+            list.scrollTo({ left: (getIndex() + 1) * width(), behavior: 'smooth' });
+        });
     });
 </script>
