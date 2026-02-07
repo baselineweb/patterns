@@ -1,0 +1,30 @@
+<style>
+    .skip-link {
+        position: absolute;
+        left: -9999px;
+        z-index: 999;
+        padding: 0.5rem 1rem;
+        background: Canvas;
+        color: CanvasText;
+        text-decoration: underline;
+
+        &:focus {
+            left: 0;
+            top: 0;
+        }
+    }
+</style>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Main navigation">
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>
+
+<main id="main-content">
+    <h1>Main Content</h1>
+    <p>The skip link above becomes visible when focused via keyboard navigation.</p>
+</main>

@@ -1,0 +1,28 @@
+<style>
+    .textarea-grow {
+        display: grid;
+
+        &::after {
+            content: attr(data-replicated-value) " ";
+            white-space: pre-wrap;
+            visibility: hidden;
+        }
+
+        >textarea {
+            resize: none;
+            overflow: hidden;
+        }
+
+        >textarea,
+        &::after {
+            grid-area: 1 / 1 / 2 / 2;
+            padding: 0.5rem;
+            font: inherit;
+        }
+    }
+</style>
+<label for="textarea-auto">Auto-growing textarea</label>
+<div class="textarea-grow">
+    <textarea name="textarea-auto" id="textarea-auto" rows="3"
+        oninput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
+</div>

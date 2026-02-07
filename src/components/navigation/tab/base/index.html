@@ -1,0 +1,52 @@
+<style>
+    .tabs [role="tablist"] {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid color-mix(in srgb, currentColor 20%, transparent);
+    }
+
+    .tabs [role="tab"] {
+        padding: 0.5rem 1rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+
+        &[aria-selected="true"] {
+            border-bottom-color: currentColor;
+        }
+
+        &:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+        }
+    }
+
+    .tabs [role="tabpanel"] {
+        padding: 1rem;
+        border: 2px solid color-mix(in srgb, currentColor 20%, transparent);
+        border-top: none;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+</style>
+<div class="tabs">
+    <div role="tablist" aria-label="Sample tabs">
+        <button role="tab" id="tab-1" aria-selected="true" aria-controls="panel-1">Tab 1</button>
+        <button role="tab" id="tab-2" aria-selected="false" aria-controls="panel-2" tabindex="-1">Tab 2</button>
+        <button role="tab" id="tab-3" aria-selected="false" aria-controls="panel-3" tabindex="-1">Tab 3</button>
+    </div>
+    <div role="tabpanel" id="panel-1" aria-labelledby="tab-1">
+        <p>Content for Tab 1</p>
+    </div>
+    <div role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+        <p>Content for Tab 2</p>
+    </div>
+    <div role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden>
+        <p>Content for Tab 3</p>
+    </div>
+</div>
