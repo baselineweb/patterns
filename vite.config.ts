@@ -7,8 +7,8 @@ export default defineConfig(({ command }) => ({
     viteStaticCopy({
       targets: [
         {
-          src: 'src/components/**/*.html',
-          dest: 'src/components',
+          src: 'src/components',
+          dest: 'src'
         }
       ]
     })
