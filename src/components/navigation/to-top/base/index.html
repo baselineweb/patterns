@@ -1,0 +1,47 @@
+<style>
+    .to-top {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.5rem 1rem;
+        border: 2px solid color-mix(in srgb, currentColor 20%, transparent);
+        background: Canvas;
+        color: currentColor;
+        font: inherit;
+        cursor: pointer;
+        z-index: 99;
+
+        /* hidden by default, revealed by scroll progress */
+        scale: 0;
+        animation: to-top-reveal linear both;
+        animation-timeline: scroll();
+        animation-range: 10vh 11vh;
+
+        &:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+    }
+
+    .demo-content {
+        min-height: 200vh;
+        padding: 2rem;
+    }
+
+    @keyframes to-top-reveal {
+        to {
+            scale: 1;
+        }
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+
+<div class="demo-content">
+    <h1>Scroll down to reveal the "to top" button</h1>
+    <p>The button appears after scrolling past the initial viewport and smoothly scrolls the page back to the top when activated.</p>
+</div>
+
+<a href="#" class="to-top" aria-label="Back to top">&uarr; Top</a>
