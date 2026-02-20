@@ -1,0 +1,30 @@
+<style data-demo-styles>
+  figure {
+     position: relative;
+  }
+  
+  blockquote::before {
+    content: "“";
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    font-size: 3em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;    
+  }    
+</style>
+<figure>
+  <blockquote cite="https://en.wikipedia.org/wiki/Michael_Jordan">
+    <p>
+      I'm not out there sweating for three hours every day just to find out what it feels like to sweat.
+    </p>
+  </blockquote>
+  <figcaption>
+    <cite>
+      <a href="https://en.wikipedia.org/wiki/Michael_Jordan" target="_blank">
+        Michael Jordan
+      </a>
+    </cite>
+  </figcaption>
+</figure>
